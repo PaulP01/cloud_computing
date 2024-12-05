@@ -1,0 +1,5 @@
+azure-functions
+azure-ai-formrecognizer
+azure-storage-blob
+python-dotenv
+python-docx
