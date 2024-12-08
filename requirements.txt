@@ -1,0 +1,8 @@
+flask
+flask-cors
+azure-storage-blob
+azure-ai-formrecognizer
+python-dotenv
+python-docx
+azure-functions
+azure-core
