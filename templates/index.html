@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF to Word Conversion</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Convertir un PDF en fichier Word</h1>
+    <form id="upload-form" enctype="multipart/form-data">
+        <input type="file" id="file-input" name="file" />
+        <span id="file-name">Aucun fichier choisi</span><br><br>
+        <button type="submit">Convertir</button>
+    </form>
+
+    <div id="response"></div>
+
+    <script>
+    // Affiche le nom du fichier sélectionné
+    $('#file-input').on('change', function(event) {
+        var fileName = event.target.files[0].name;
+        $('#file-name').text(fileName);
+    });
+
+    // Soumettre le formulaire
+    $('#upload-form').on('submit', function(event) {
+        event.preventDefault();  // Empêche le rechargement de la page
+        
+        var formData = new FormData();
+        var file = $('#file-input')[0].files[0];
+        if (!file) {
+            alert("Veuillez sélectionner un fichier.");
+            return;
+        }
+
+        formData.append('file', file);
+
+        // Envoi du fichier au backend Flask
+        $.ajax({
+            url: '/upload', // URL relative pour le backend
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                $('#response').html(`
+                    <p>Le fichier a été traité avec succès!</p>
+                    <p><strong>Fichier Word généré : </strong>${response.word_file}</p>
+                `);
+            },
+            error: function(xhr, status, error) {
+                $('#response').html(`
+                    <p>Erreur: ${xhr.responseText}</p>
+                `);
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
